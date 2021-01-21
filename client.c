@@ -13,7 +13,6 @@
 # include <time.h>
 
 # define IP "127.0.0.1"
-# define fileName "sample.mp4"
 # define BUFSIZE 500 // Restricting payload 
 
 struct packet {
@@ -72,16 +71,16 @@ void receiveAcks(){
 
 int main(int argc , char* argv[]){
     
-    if(argc<2){
-        printf("Port Number is not specified.\nPlease provide a port number.");
+    if(argc<3){
+        printf("File name and Port Number are not specified.\nPlease provide a file name and port number.\n");
         return 0;
-    }
+	}
     
 
 
 
     //assigning the port value obtained from the cli to PORT var
-    PORT = atoi(argv[1]);//converting from string to int using atoi
+    PORT = atoi(argv[2]);//converting from string to int using atoi
 
     //creating socket
     sock = socket(AF_INET,SOCK_DGRAM,0);
@@ -105,13 +104,18 @@ int main(int argc , char* argv[]){
     
 
     //opening file to read it only
-    file = open(fileName, O_RDONLY);
+    file = open(argv[1], O_RDONLY);
 
     //checking if the file has been opened or not
     if(file<0){
         printf("There was an error opening the file. Please try again.");
         return 0;
     }
+	else
+	{
+		printf("%s has been opened",argv[1]);
+	}
+	
 
     //calculating size of the file
     fstat(file,&fileStat);
